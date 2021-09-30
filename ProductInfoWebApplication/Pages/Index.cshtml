@@ -1,0 +1,29 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div>
+    <h6 class="display-4">Product Information</h6>
+</div>   
+<div style="border: 1px solid black ">
+    
+    <table style="margin: 50px">
+        <tr>
+            <td style="margin: 10px">Product Id:</td>
+            <td style="margin: 10px"><input type="text" id="ProductId" /></td>
+        </tr>
+        <tr><td style="margin: 10px"> &nbsp;</td></tr>
+        <tr>
+            <td style="margin: 10px">Product Name:</td>
+            <td style="margin: 10px"><input type="text" id="ProductName" /></td>
+        </tr>
+        <tr><td style="margin: 10px"> &nbsp;</td></tr>
+        <tr>
+            <td style="margin: 10px"><input type="button" value="Add Product" /></td>
+            <td style="margin: 10px"><input type="button" value="Get Product" /></td>
+        </tr>
+    </table>
+    
+</div>
