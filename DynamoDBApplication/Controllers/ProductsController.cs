@@ -1,4 +1,5 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
+using DynamoDBApplication.BusinessLogic;
 using DynamoDBApplication.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,19 +18,20 @@ namespace DynamoDBApplication.Controllers
     {
         private readonly IDynamoDBContext _dynamoDbContext;
         private readonly ILogger<ProductsController> _logger;
+        private readonly IDbTransaction _dbTransaction;
 
-        public ProductsController(ILogger<ProductsController> logger, IDynamoDBContext dynamoDbContext)  
+        public ProductsController(ILogger<ProductsController> logger, IDbTransaction dbTransaction, IDynamoDBContext dynamoDbContext)  
         {
             _dynamoDbContext = dynamoDbContext ?? throw new ArgumentNullException(nameof(dynamoDbContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _dbTransaction = dbTransaction ?? throw new ArgumentNullException(nameof(dbTransaction));
         }
 
-        // GET: api/<ProductsController>
         [HttpGet]
         [Route("{Id}", Name = "GetProduct")]
         public async Task<ActionResult<Product>> GetProductById(string Id)
         {
-            var product = await _dynamoDbContext.LoadAsync<Product>(Id);
+            var product = await _dbTransaction.GetProductById(Id);
 
             if (product == null)
             {
@@ -44,7 +46,8 @@ namespace DynamoDBApplication.Controllers
         public async Task<ActionResult<Product>> GetAllProducts()
         {
             var condition = new List<ScanCondition>();
-            var products = await _dynamoDbContext.ScanAsync<Product>(condition).GetRemainingAsync();
+
+            var products = await _dbTransaction.GetAllProducts();
 
             if (products == null)
             {
@@ -58,7 +61,7 @@ namespace DynamoDBApplication.Controllers
         [Route("AddProduct")]
         public async Task AddProduct([FromBody] Product product)
         {
-            await _dynamoDbContext.SaveAsync(product);
+            await _dbTransaction.AddProduct(product);
         }
 
     }

@@ -7,7 +7,7 @@
     </div>
     <div style="border: 1px solid black">
 
-        <table style="margin: 50px">
+        <table style="margin: 30px">
             <tr>
                 <td style="margin: 10px; width: 121px;">Product Id:</td>
                 <td style="margin: 10px">
@@ -26,14 +26,20 @@
             <tr>
                 <td style="margin: 10px; width: 121px;">&nbsp;</td>
             </tr>
+            
+        </table>
+
+        <table style="margin: 30px">
             <tr>
-                <td style="margin: 10px; width: 121px;">
+                <td style="margin: 10px; width: 100px;">
                     <asp:Button ID="AddProduct" runat="server" Text="Add Product" OnClick="AddProduct_Click" />
-                <td style="margin: 10px">
+                <td style="margin: 10px; width: 100px;">
                     <asp:Button ID="GetProduct" runat="server" Text="Get Product" OnClick="GetProduct_Click" />
+                <td style="margin: 10px; width: 100px;">
+                    <asp:Button ID="GetAllProducts" runat="server" Text="Get All Product" OnClick="GetAllProducts_Click" /></td>
             </tr>
         </table>
-        <div style="margin: 50px;">
+        <div style="margin: 30px;">
             <asp:Label ID="ErrorMsg" runat="server" Text="Label" ForeColor="#FF3300" Visible="False"></asp:Label>
         </div>
         

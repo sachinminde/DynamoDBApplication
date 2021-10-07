@@ -2,6 +2,7 @@
 using ProductInfoWebApp.Model;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -15,11 +16,11 @@ namespace ProductInfoWebApp
     {
 
         IEnumerable<Product> products = null;
-        
+        string baseaAddress = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            GetAllRecords();
+            baseaAddress = ConfigurationManager.AppSettings["baseAddress"];
         }
 
         protected void AddProduct_Click(object sender, EventArgs e)
@@ -32,11 +33,12 @@ namespace ProductInfoWebApp
             var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
 
             HttpClient hc = new HttpClient();
-            hc.BaseAddress = new Uri("http://localhost:61192/api/Products/");
+            hc.BaseAddress = new Uri(baseaAddress);
             var getProductsApi = hc.PostAsync("AddProduct", stringContent);
             getProductsApi.Wait();
 
             GetAllRecords();
+            Response.Write(Request.RawUrl.ToString());
         }
 
         protected void GetProduct_Click(object sender, EventArgs e)
@@ -44,7 +46,7 @@ namespace ProductInfoWebApp
             string productId = ProductId.Text;
 
             HttpClient hc = new HttpClient();
-            hc.BaseAddress = new Uri("http://localhost:61192/api/Products/");
+            hc.BaseAddress = new Uri(baseaAddress);
             var getProductsApi =  hc.GetAsync(string.Format("{0}", productId));
             getProductsApi.Wait();
 
@@ -71,7 +73,7 @@ namespace ProductInfoWebApp
          public void GetAllRecords()
         {
             HttpClient hc = new HttpClient();
-            hc.BaseAddress = new Uri("http://localhost:61192/api/Products/");
+            hc.BaseAddress = new Uri(baseaAddress);
             var getProductsApi = hc.GetAsync("GetAllProducts");
             getProductsApi.Wait();
 
@@ -84,7 +86,13 @@ namespace ProductInfoWebApp
                 products = records.Result;
                 ProductsGridView.DataSource = products;
                 ProductsGridView.DataBind();
+                ProductsGridView.Visible = true;
             }
+        }
+
+        protected void GetAllProducts_Click(object sender, EventArgs e)
+        {
+            GetAllRecords();
         }
     }
 }

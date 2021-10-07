@@ -1,0 +1,12 @@
+﻿.div-style {
+    border: 1px solid black;
+}
+
+.td-style {
+    margin: 10px;
+    width: 121px;
+}
+
+.error-msg {
+    margin: 30px;
+}
